@@ -4,4 +4,3 @@ ldapadd -D "cn=admin,dc=ltacademy,dc=com" -h 127.0.0.1  -w'123' -x -f Directory_
 ldapadd -D "cn=admin,dc=ltacademy,dc=com" -h 127.0.0.1  -w'123' -x -f Users
 ldapadd -D "cn=admin,dc=ltacademy,dc=com" -h 127.0.0.1  -w'123' -x -f Books
 ldapadd -D "cn=admin,dc=ltacademy,dc=com" -h 127.0.0.1  -w'123' -x -f ReplicationUser
-
