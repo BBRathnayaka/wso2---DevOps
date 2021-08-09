@@ -1,7 +1,0 @@
-#Ldapadd commands
-ldapadd -D "cn=admin,dc=ltacademy,dc=com" -h 127.0.0.1  -w'123' -x -f ROOT_dc 
-ldapadd -D "cn=admin,dc=ltacademy,dc=com" -h 127.0.0.1  -w'123' -x -f Directory_Strcture
-ldapadd -D "cn=admin,dc=ltacademy,dc=com" -h 127.0.0.1  -w'123' -x -f Users
-ldapadd -D "cn=admin,dc=ltacademy,dc=com" -h 127.0.0.1  -w'123' -x -f Books
-ldapadd -D "cn=admin,dc=ltacademy,dc=com" -h 127.0.0.1  -w'123' -x -f ReplicationUser
-
