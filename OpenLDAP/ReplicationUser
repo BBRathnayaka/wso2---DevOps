@@ -1,0 +1,7 @@
+dn: uid=replicationuser,ou=system,dc=ltacademy,dc=com
+objectClass: inetOrgPerson
+objectClass: top
+cn: replicationuser
+sn: replicationuser
+uid: replicationuser
+userPassword: {SSHA}Bkyd9IHVT2/vha8E2yhzcffuuntSKacr
