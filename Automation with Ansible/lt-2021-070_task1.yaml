@@ -1,0 +1,55 @@
+---
+# Example Playbook
+- name: Compute Engine Instance Examples
+  hosts: localhost
+  vars:
+    service_account_email: "ansible-svc@ansible-326704.iam.gserviceaccount.com"
+    credentials_file: "./ansible-svc.json"
+    project_id: "ansible-326704"
+    instance_name: "test2"
+
+  tasks:
+    - name: create multiple instances
+      gce:
+        instance_names: "{{ instance_name }}"
+        zone: us-central1-a
+        machine_type: n1-standard-1
+        image: centos-7
+        state: present
+        service_account_email: "{{ service_account_email }}"
+        credentials_file: "{{ credentials_file }}"
+        project_id: "{{ project_id }}"
+        tags: http,http-server
+        metadata:
+          startup-script: |
+            #!/bin/bash
+            sudo yum install httpd -y
+            sudo echo "HELLO WORLD $(hostname) !!" > /var/www/html/index.html
+            sudo systemctl restart httpd 
+      register: gce
+
+    - name: Create Firewall Rule with Source Tags
+      gce_net:
+        name: my-network
+        fwname: "allow-http"
+        allowed: tcp:80,8080
+        state: "present"
+        target_tags: "http"
+        subnet_region: us-central1 
+        service_account_email: "{{ service_account_email }}"
+        project_id: "{{ project_id }}"
+        credentials_file: "{{ credentials_file }}"
+      tags:
+      - fw
+
+    - name: delete test-instances
+      # Basic termination of instance.
+      gce:
+        service_account_email: "{{ service_account_email }}"
+        credentials_file: "{{ credentials_file }}"
+        project_id: "{{ project_id }}"
+        instance_names: "{{ instance_name }}"
+        zone: us-central1-a
+        state: absent
+      tags:
+        - delete
