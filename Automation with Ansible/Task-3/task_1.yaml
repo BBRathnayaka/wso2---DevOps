@@ -1,0 +1,4 @@
+- name: Compute Engine Instance Examples
+  hosts: localhost
+  roles:
+    - gce
