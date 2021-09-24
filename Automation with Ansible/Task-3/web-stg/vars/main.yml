@@ -1,0 +1,13 @@
+---
+# vars file for gce
+service_account_email: "ansible-svc@ansible-326704.iam.gserviceaccount.com"
+credentials_file: "/etc/ansible/roles/gce/files/ansible-svc.json"
+project_id: "ansible-326704"
+instance_name: "webserver2"
+new_hostname1: "lt-2021-070-webserver1"
+
+hostinfo:
+  - host: w1
+    name: webserver01
+  - host: w2
+    name: webserver02

@@ -1,0 +1,60 @@
+---
+# tasks file for gce
+  - name: create multiple instances
+    gce:
+      instance_names: "{{ instance_name }}"
+      zone: us-central1-a
+      machine_type: e2-micro
+      image: centos-7
+      state: present
+      service_account_email: "{{ service_account_email }}"
+      credentials_file: "{{ credentials_file }}"
+      project_id: "{{ project_id }}"
+      tags: http,http-server
+      metadata:
+        startup-script: |
+          #!/bin/bash
+          sudo yum install httpd -y
+          sudo echo "HELLO WORLD $(hostname) !!" > /var/www/html/index.html
+          sudo systemctl restart httpd 
+    register: gce
+
+  - name: Create Firewall Rule with Source Tags
+    gce_net:
+      name: default
+      fwname: "allow-http"
+      allowed: tcp:80
+      state: "present"
+      target_tags: "http"
+      subnet_region: us-central1 
+      service_account_email: "{{ service_account_email }}"
+      project_id: "{{ project_id }}"
+      credentials_file: "{{ credentials_file }}"
+    tags:
+    - fw
+    
+  - name: delete test-instances
+    # Basic termination of instance.
+    gce:
+      service_account_email: "{{ service_account_email }}"
+      credentials_file: "{{ credentials_file }}"
+      project_id: "{{ project_id }}"
+      instance_names: "{{ instance_name }}"
+      zone: us-central1-a
+      state: absent
+    tags:
+      - delete
+
+        #  - name: change hostname
+        #    hostname:
+        #      #name: "{{ new_hostname1 }}"
+        #      name: "w1"
+        #    tags: hostname
+
+  - name: change hostnames {{ inventory_hostname }}
+    hostname:
+      name: "{{ item.name }}"
+      # msg: "Item name:{{ item.name }}, inventory name: {{ inventory_hostname }}"
+    with_items: "{{ hostinfo }}"
+    when: "{{ item.host == inventory_hostname }}"
+    tags: hostname
