@@ -9,7 +9,7 @@
     instance_name: "test1,test2"
 
   tasks:
-    - name: create multiple instances
+    - name: create GCP instances
       gce:
         instance_names: "{{ instance_name }}"
         zone: us-central1-a
