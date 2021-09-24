@@ -58,3 +58,9 @@
     with_items: "{{ hostinfo }}"
     when: "{{ item.host == inventory_hostname }}"
     tags: hostname
+
+  - name: update the system - {{ inventory_hostname }}
+    yum:
+      name: "*"
+      state: latest
+    tags: update

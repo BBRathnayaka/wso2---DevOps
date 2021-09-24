@@ -1,0 +1,7 @@
+# Rolling Update - define how many hosts Ansible should manage at a single time by using the ‘’serial’’ keyword
+- name: Update Compute Engine Instances
+  hosts: webservers
+  become: yes
+  serial: 1
+  roles:
+    - gce
