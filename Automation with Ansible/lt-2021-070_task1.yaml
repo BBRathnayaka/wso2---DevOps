@@ -1,19 +1,19 @@
 ---
 # Example Playbook
-- name: Compute Engine Instance Examples
+- name: Compute Engine Instance
   hosts: localhost
   vars:
     service_account_email: "ansible-svc@ansible-326704.iam.gserviceaccount.com"
     credentials_file: "./ansible-svc.json"
     project_id: "ansible-326704"
-    instance_name: "test2"
+    instance_name: "test1,test2"
 
   tasks:
     - name: create multiple instances
       gce:
         instance_names: "{{ instance_name }}"
         zone: us-central1-a
-        machine_type: n1-standard-1
+        machine_type: e2-micro
         image: centos-7
         state: present
         service_account_email: "{{ service_account_email }}"
@@ -24,15 +24,17 @@
           startup-script: |
             #!/bin/bash
             sudo yum install httpd -y
-            sudo echo "HELLO WORLD $(hostname) !!" > /var/www/html/index.html
-            sudo systemctl restart httpd 
+            sudo echo "<h1> HELLO WORLD $(hostname)</h1>" > /var/www/html/index.html
+            sudo systemctl restart httpd
       register: gce
+      tags:
+      - create
 
     - name: Create Firewall Rule with Source Tags
       gce_net:
-        name: my-network
+        name: default
         fwname: "allow-http"
-        allowed: tcp:80,8080
+        allowed: tcp:80
         state: "present"
         target_tags: "http"
         subnet_region: us-central1 
