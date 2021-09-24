@@ -1,3 +1,3 @@
-<h2 align="center">Linux Systems Administration & DEVOPS Engineering Training</h2>
+<h2 align="center">Linux Systems Administration & DevOps Engineering Training</h2>
 
 ---
